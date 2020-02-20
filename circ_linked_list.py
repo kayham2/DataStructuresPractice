@@ -60,18 +60,23 @@ class CircularLinkedList:
 					return
 		return
 
-	def split_list(self, key):
+	def split_list(self):
 		new_list = CircularLinkedList()
 		size = len(cllist)
 		if size <= 1:
 			return
-
+		mid = size//2
+		count = 0
 		current1 = self.head
-		while current1.data != key:
+		prev = None
+		while current1 and count < mid:
+			count += 1
+			prev = current1
 			current1 = current1.next
-		tmp = current1.next
+			
+		tmp = current1
 		current2 = tmp
-		current1.next = self.head
+		prev.next = self.head
 		
 		while current2.next != self.head:
 			new_list.append(current2.data)
@@ -107,7 +112,7 @@ cllist.append("A")
 cllist.append("B")
 cllist.append("C")
 cllist.append("D")
-cllist.append("E")
+cllist.append("C")
 
-cllist.split_list("B")
+cllist.split_list()
 
