@@ -307,16 +307,16 @@ llist = LinkedList()
 
 # llist.tail_to_head().print_list()
 
-llist.append(5)
-llist.append(6)
-llist.append(3)
+# llist.append(5)
+# llist.append(6)
+# llist.append(3)
 
-llist2 = LinkedList()
-llist2.append(8)
-llist2.append(4)
-llist2.append(2)
+# llist2 = LinkedList()
+# llist2.append(8)
+# llist2.append(4)
+# llist2.append(2)
 
-print(llist.sum_two_list(llist2))
+# print(llist.sum_two_list(llist2))
 
 
 
