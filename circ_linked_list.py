@@ -99,20 +99,61 @@ class CircularLinkedList:
 				if current == self.head:
 					break
 			return count
+
+	def josephus_circle(self, step):
+		current = self.head
+		prev = None
+		index = 1
+		while len(self) > 1:
+			while index < step:
+				prev = current
+				current = current.next
+				index +=1
+			if current	== self.head:
+				self.head = prev
+			print(f"REMOVED: {current.data}")
+			prev.next = current.next
+			current = prev.next
+			index = 1
+
+		return self.print_list()
+		
+	def is_circ_ll(self, input_list):
+		current = input_list.head
+		while current:
+			current = current.next
+			if current == None:
+				return False
+			elif current == self.head:
+				return True
+
 			
 
 
+from LinkedList_new import LinkedList
 
 
-
+llist = LinkedList()
+llist.append(5)
+llist.append(6)
+llist.append(8)
 
 
 cllist = CircularLinkedList()
-cllist.append("A")
-cllist.append("B")
-cllist.append("C")
-cllist.append("D")
-cllist.append("C")
+cllist.append(1)
+cllist.append(2)
+cllist.append(3)
+cllist.append(4)
+# cllist.append(5)
+# cllist.append(6)
+# cllist.append(7)
+# cllist.append(8)
+# cllist.append(9)
+# cllist.append(10)
+# cllist.print_list()
+# print ("\n")
+# cllist.josephus_circle(2)
 
-cllist.split_list()
+
+print(cllist.is_circ_ll(cllist))
 
