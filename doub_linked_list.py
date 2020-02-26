@@ -19,6 +19,8 @@ class DoublyLinkedList:
 			current.next = new_node
 			new_node.prev = current
 			new_node.next = None
+		return
+
 
 	def prepend(self, data):
 		new_node = Node(data)
@@ -74,6 +76,7 @@ class DoublyLinkedList:
 		while current:
 			print(current.data)
 			current = current.next
+		return
 
 
 dllist = DoublyLinkedList()
