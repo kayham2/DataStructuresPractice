@@ -1,48 +1,29 @@
 ### Checking to see if the brackets are matched
-from stack1 import Stack
 import sys
+from stack1 import Stack
 
-def matched(bracket, bracket2):
-	print(bracket, bracket2)
-	if bracket == "{" and bracket2 == "}":
+string1 = sys.argv[1]
+
+def is_match(x):
+	if x == "}" and s1.peek() == "{":
 		return True
-	elif bracket == "(" and bracket2 == ")":
+	elif x == "]" and s1.peek() == "[":
 		return True
-	elif bracket == "[" and bracket2 == "]":
+	elif x == ")" and s1.peek() == "(":
 		return True
 	else:
 		return False
 
-def balance_brackets(string):
-	st1 = Stack()
-	is_balanced = True
-	index = 0
-	while index < len(string) and is_balanced:
-		char = string[index]
-		if char in "{([":
-			st1.push(char)
-		else:
-			if st1.is_empty():
-				return False
-			elif char not in "}])":
-				pass
-			elif matched(st1.pop(), char):
-				is_balanced = True
-			else:
-				print("enter")
-				return False
-		index +=1
+s1 = Stack()
+for char in string1:
+	if char is None:
+		break
+	elif char in "{[(":
+		s1.push(char)
+	elif is_match(char):
+		s1.pop()
 
-	if st1.is_empty():
-		return is_balanced
-	else:
-		return False
-
-	return is_balanced
-
-if balance_brackets(sys.argv[1]):
+if s1.is_empty() and string1 != "":
 	print("Balanced")
 else:
-	print("Not balanced")
-
-
+	print("Not Balanced")
