@@ -2,15 +2,15 @@
 from stack1 import Stack
 import sys
 
-def reverse_str(string):
-	final = ""
-	st1 = Stack()
+string = sys.argv[1]
+final = ""
 
-	for char in string:
-		st1.push(char)
-	while st1.is_empty() == False:
-		final += str(st1.pop())
+s1 = Stack()
+for char in string:
+	s1.push(char)
 
-	return final
+while s1.is_empty() is False:
+	final += s1.pop()
+	
 
-print(reverse_str(sys.argv[1]))
+print(final)
