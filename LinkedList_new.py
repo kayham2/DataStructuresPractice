@@ -1,322 +1,342 @@
-class Node:
+class Node():
 	def __init__(self, data):
 		self.data = data
 		self.next = None
 
-class LinkedList:
+class LinkedList():
 	def __init__(self):
 		self.head = None
 
 	def append(self, data):
 		new_node = Node(data)
-		#Append only if it's the first node
-		if self.head == None:
+		current = self.head
+		if self.head is None:
 			self.head = new_node
 			return
-
-		#Append to the end
-		tail = self.head
-		while tail.next:
-			tail = tail.next
-		tail.next = new_node
+		else:
+			while current.next:
+				current = current.next
+			current.next = new_node
+			new_node.next = None
+			return	
 
 	def prepend(self, data):
 		new_node = Node(data)
-		if self.head == None:
+		current = self.head
+		if self.head is None:
 			self.head = new_node
 			return
-		#prepend to an unempty list
-		current = self.head
-		new_node.next = current
-		self.head = new_node
-		return
+		else:
+			new_node.next = current
+			self.head = new_node
+			return
 
-	def print_list(self):
+	def display_list(self):
 		current = self.head
 		while current:
 			print(current.data)
 			current = current.next
 		return
 
-	def insert_after_val(self, val, data):
-		new_node = Node(data)
+	def insert_after_node(self, data1, data2):
+		new_node = Node(data2)
 		current = self.head
-		if val == None or val == "":
-			return
-		while current and current.data != val:
+
+		while current.data != data1 and current.next:
 			current = current.next
-		new_node.next = current.next
+		if current.data != data1:
+			return
+		if current.next is None:
+			new_node.next = None
+		else:
+			new_node.next = current.next
 		current.next = new_node
 		return
 
-	def del_node(self, val):
-		if not val or val =="":
-			return
-
+	def deletion(self, data1):
 		current = self.head
-		#If node is head:
-		if val==current.data:
-			self.head = current.next
+		if self.head.data == data1:
+			self.head = self.head.next
+			return
+		else:
+			while current.data != data1 and current.next:
+				tmp = current
+				current = current.next
+			if current.data != data1:
+				return
+			else:
+				tmp.next = current.next
 			return
 
-		prev = None
-		while current and current.data != val:
-			prev = current
+	def deletion_position(self, index):
+		count = 0
+		x = 0
+		current = self.head
+		while current:
 			current = current.next
-
-		prev.next = current.next
+			count +=1
+		if index > count-1 or index < 0:
+			return
+		elif index == 0:
+			self.head = self.head.next
+			return
+		current = self.head
+		while x < index and current.next:
+			tmp = current
+			current = current.next
+			x += 1
+		tmp.next = current.next
 		return
 
 	def length(self):
 		count = 0
 		current = self.head
-
 		while current:
 			count +=1
 			current = current.next
 		return count
 
-	def swap(self, node1, node2):
-		if node1 == node2:
-			return
-		prev1 = None
-		prev2 = None
+	def length_rec(self, node):
+		if node is None:
+			return 0
+		return 1 + self.length_rec(node.next)
 
+	def node_swap(self, data1, data2):
+		prev1 = None
 		current1 = self.head
+
+		prev2 = None
 		current2 = self.head
 
-		while current1 and current1.data != node1:
+		if data1==data2:
+			return
+
+		while current1.data != data1 and current1.next:
 			prev1 = current1
 			current1 = current1.next
 
-		while current2 and current2.data != node2:
+		while current2.data != data2 and current2.next:
 			prev2 = current2
 			current2 = current2.next
 
-		#if first node is the head
-		if prev1 is None:
-			self.head = current2
-		else:
+		if not current1 or not current2:
+			return
+
+		#if One of the nodes is the head node
+
+		if prev1:
 			prev1.next = current2
-
-		#If second node is head
-		if prev2 is None:
-			self.head = current1
 		else:
-			prev2.next = current1
+			self.head = current2
 
-		temp = current2.next
-		current2.next = current1.next
-		current1.next = temp
+		if prev2:
+			prev2.next = current1
+		else:
+			self.head = current1
+
+		current1.next, current2.next = current2.next, current1.next
 		return
 
-	def reverse_list(self):
-		prev = None
+	def reverse(self):
 		current = self.head
+		prev = None
+		temp = None
 
 		while current:
-			tmp = current.next
+			temp = current.next
 			current.next = prev
 			prev = current
-			current = tmp
+			current = temp
 		self.head = prev
-		return self.head
 
-	def merge_two_sorted(self, list2):
+	def merge_sorted_lists(self, s_list):
 		new_list = LinkedList()
-		current1 = self.head
-		current2 = list2.head
+		cur1 = self.head
+		cur2 = s_list.head
 
-		while current1 and current2:
-			if current1.data >= current2.data:
-				new_list.append(current2.data)
-				current2 = current2.next
+		if cur1.data < cur2.data:
+			new_list.append(cur1.data)
+			cur1 = cur1.next
+		else:
+			new_list.append(cur2.data)
+			cur2 = cur2.next
+
+		while cur1 and cur2:
+			if cur1.data < cur2.data:
+				new_list.append(cur1.data)
+				cur1 = cur1.next
 			else:
-				new_list.append(current1.data)
-				current1 = current1.next
+				new_list.append(cur2.data)
+				cur2 = cur2.next
 
-		while current1:
-			new_list.append(current1.data)
-			current1 = current1.next
-		while current2:
-			new_list.append(current2.data)
-			current2 = current2.next
-		
+		while cur1:
+			new_list.append(cur1.data)
+			cur1 = cur1.next
+		while cur2:
+			new_list.append(cur2.data)
+			cur2 = cur2.next
 		return new_list
 
 	def remove_duplicates(self):
+		li = []
 		current = self.head
 		prev = None
-		duplicates = {}
-
 		while current:
-			if current.data in duplicates:
+			if current.data in li:
 				prev.next = current.next
+				current = current.next
 			else:
-				duplicates[current.data] = 1
+				li.append(current.data)
 				prev = current
-			current = prev.next
-	
-		return self
+				current = current.next
+		return
 
-	def nth_to_last(self, x):
-		index = 0
-		a = b = self.head
-		while index < x:
-			b = b.next
-			index += 1
+	def nth_to_last(self, key):
+		current = self.head
+		index = self.length() - key
+		while index > 0 and current:
+			current = current.next
+			index -= 1
+		return current.data
 
-		while b:
-			a = a.next
-			b = b.next
-		return print(a.data)
-
-	def count_occurences(self, data):
+	def count_occurences(self, val):
 		current = self.head
 		count = 0
 
 		while current:
-			if current.data == data:
-				count +=1
+			if current.data==val:
+				count += 1
 			current = current.next
+
 		return count
 
 	def rotate(self, key):
-		tmp = self.head
 		current = self.head
-		prev = None
-		index = 0
-		while index < key:
-			prev = current
-			current = current.next
-			index += 1
+		tail = self.head
 
-		self.head = current
-		prev.next = None
-		tail = current
+		while current.data != key and current:
+			current = current.next
+
 		while tail.next:
 			tail = tail.next
 
-		tail.next = tmp
-		return self
+		if not current:
+			return
+
+		tail.next = self.head
+		self.head = current.next
+		current.next = None
 
 	def is_palindrome(self):
 		current = self.head
-		llist = []
-		is_pal = True
+		string = ""
+
 		while current:
-			llist.append(current.data)
+			string += current.data
 			current = current.next
 
-		current = self.head
-		while current:
-			if current.data == llist[-1]:
-				is_pal = True
-				llist.pop()
-			else:
-				is_pal = False
-				break
-			current = current.next
-		
-		return is_pal
+		return string == string[::-1]
 
-	def tail_to_head(self):
+	def move_tail_to_head(self):
 		current = self.head
-		tail = self.head
 		prev = None
-		while tail.next:
-			prev = tail
-			tail = tail.next
-
-		tail.next = current
+		while current.next:
+			prev = current
+			current = current.next
+		current.next = self.head
 		prev.next = None
-		self.head = tail
-		return self
+		self.head = current
+		return
 
-	def sum_two_list(self, list1):
-		string1 = ""
-		string2 = ""
-		current1 = self.head
-		current2 = list1.head
+	def sum_two_lists(self, l2):
+		cur1 = self.head
+		cur2 = l2.head
 
-		while current1:
-			string1 += str(current1.data)
-			current1 = current1.next
+		sum_list = LinkedList()
+		carry = 0
+	
+		while cur1 or cur2:
+			if cur1:
+				i = cur1.data
+			else:
+				i = 0
+			if cur2:
+				j = cur2.data
+			else:
+				j = 0
 
-		while current2:
-			string2 += str(current2.data)
-			current2 = current2.next
 
-		return(int(string1[::-1])+int(string2[::-1]) )
+			s = i + j + carry
+
+			if s > 10:
+				carry = 1
+				remainder = s%10
+				sum_list.append(remainder)
+			else:
+				carry = 0
+				sum_list.append(s)
+
+			if cur1:
+				cur1 = cur1.next
+			if cur2:
+				cur2 = cur2.next
+
+		if cur1 is None and cur2 is None:
+			if carry == 1:
+				sum_list.append(carry)
+		return sum_list.display_list()
+
 
 
 
 
 llist = LinkedList()
-# llist.prepend("A")
-# llist.append("B")
-# llist.append("C")
-# llist.append("D")
-# llist.insert_after_val("D", "E")
-# #llist.del_node("A")
-# #llist.swap("A", "C")
-# llist.reverse_list().print_list()
-
+llist2 = LinkedList()
 # llist.append(1)
-# llist.append(5)
-# llist.append(7)
-# llist.append(9)
-# llist.append(10)
+# llist.append(2)
+# llist.append(3)
+# llist.prepend(0)
+# llist.insert_after_node(1, 1.5)
+# llist.display_list()
+#llist.deletion(2)
+#llist.deletion_position(1)
+# print("\n")
+#print(llist.length_rec(llist.head))
+#llist.node_swap(0, 1.5)
+#llist.reverse()
 
-# llist2 = LinkedList()
+llist.append(5)
+llist.append(6)
+llist.append(3)
+llist2.append(8)
+llist2.append(4)
+llist2.append(9)
+
 # llist2.append(2)
 # llist2.append(3)
 # llist2.append(4)
 # llist2.append(6)
 # llist2.append(8)
+# llist2.display_list()
+# print("\n")
+# (llist.merge_sorted_lists(llist2)).display_list()
 
-# x = llist.merge_two_sorted(llist2)
-# x.print_list()
+llist.display_list()
+print("\n")
+llist2.display_list()
+# llist.remove_duplicates()
+# print(llist.nth_to_last(9))
+# print(llist.count_occurences(1))
 
-# llist.append(1)
-# llist.append(2)
-# llist.append(3)
-# llist.append(4)
-# llist.append(5)
-# llist.append(6)
-# llist.append(7)
-
-# llist.rotate(3).print_list()
-
-# llist.append("R")
-# llist.append("A")
-# llist.append("C")
-# llist.append("E")
-# llist.append("C")
-# llist.append("A")
-# llist.append("R")
-
-
+# llist.rotate(3)
+# llist.display_list()
 # print(llist.is_palindrome())
+# llist.move_tail_to_head()
+print("\n")
+llist.sum_two_lists(llist2)
 
 
-# llist.append("A")
-# llist.append("B")
-# llist.append("C")
-# llist.append("D")
 
-# llist.tail_to_head().print_list()
-
-# llist.append(5)
-# llist.append(6)
-# llist.append(3)
-
-# llist2 = LinkedList()
-# llist2.append(8)
-# llist2.append(4)
-# llist2.append(2)
-
-# print(llist.sum_two_list(llist2))
 
 
 
