@@ -1,159 +1,162 @@
-class Node:
+from LinkedList_new import LinkedList
+
+class Node():
 	def __init__(self, data):
 		self.data = data
 		self.next = None
-class CircularLinkedList:
+
+class CircularLinkedList():
 	def __init__(self):
 		self.head = None
+
 	def append(self, data):
 		new_node = Node(data)
-		if not self.head:
+		tail = self.head
+		if self.head is None:
 			self.head = new_node
-			new_node.next = new_node
+			new_node.next = self.head
 		else:
-			current = self.head
-			while current.next != self.head:
-				current = current.next
-			current.next = new_node
+			while tail.next is not self.head:
+				tail = tail.next
+			tail.next = new_node
 			new_node.next = self.head
 		return
 
 	def prepend(self, data):
 		new_node = Node(data)
-		if not self.head:
-			self.head = new_node
-			new_node.next = self.head
-		else:
-			current = self.head
-			tail = self.head
-			while tail.next != self.head:
-				tail = tail.next
-			new_node.next = current
-			self.head = new_node
-			tail.next = new_node
+		tail = self.head
+		while tail.next is not self.head:
+			tail = tail.next
+		new_node.next = self.head
+		tail.next = new_node
+		self.head = new_node
 		return
 
-	def print_list(self):
+	def display_list(self):
 		current = self.head
 		while current:
 			print(current.data)
 			current = current.next
-			if current == self.head:
+			if current is self.head:
 				break
 		return
 
-	def remove(self, key):
-		if key == self.head.data:
-			tail = self.head
-			while tail.next != self.head:
-				tail = tail.next
-			tail.next = self.head.next
-			self.head = tail.next
-		else:
-			current = self.head
-			prev = None
-			while current.next != self.head:
-				prev = current
-				current = current.next
-				if current.data == key:
-					prev.next = current.next
-					return
+	def remove_node(self, data):
+		tail = self.head
+		current = self.head
+		prev = None
+		while tail.next is not self.head:
+			tail=tail.next
+
+		if self.head.data == data:
+			self.head = self.head.next
+			tail.next = self.head
+			return
+
+		while current.next != self.head and current.data != data:
+			prev = current
+			current = current.next
+		prev.next = current.next
 		return
+
+	def length(self):
+		current = self.head
+		count = 1
+		while current.next is not self.head:
+			count +=1
+			current = current.next
+		return count
 
 	def split_list(self):
-		new_list = CircularLinkedList()
-		size = len(cllist)
-		if size <= 1:
+		if self.length() == 0:
 			return
-		mid = size//2
-		count = 0
-		current1 = self.head
+		elif self.length()==1:
+			return self.head
+
+		current = self.head
 		prev = None
-		while current1 and count < mid:
-			count += 1
-			prev = current1
-			current1 = current1.next
-			
-		tmp = current1
-		current2 = tmp
+		x = self.length()//2
+		while x > 0:
+			prev = current
+			current = current.next
+			x = x-1
 		prev.next = self.head
 		
-		while current2.next != self.head:
-			new_list.append(current2.data)
-			current2 = current2.next
-		new_list.append(current2.data)	
-		self.print_list()
-		print('\n')
-		new_list.print_list()
+		new_list = CircularLinkedList()
+		
+		while current.next is not self.head:
+			new_list.append(current.data)
+			current = current.next
+		new_list.append(current.data)
+
+		self.display_list()
+		print("\n")
+		new_list.display_list()
+		return 
+
+	def josephus(self, step):
+		current = self.head
+
+		while current:
+			x = 1
+			while x< step:
+				current = current.next
+				x +=1
+			tmp = current.next
+			self.remove_node(current.data)
+			self.head = tmp
+			current = tmp
+
+			if self.length() ==1:
+				break
 		return
 
-	def __len__(self):
-		current = self.head
-		if not current:
-			return 0
-		else:
-			count = 0
-			while current:
-				count += 1
-				current = current.next
-				if current == self.head:
-					break
-			return count
-
-	def josephus_circle(self, step):
-		current = self.head
-		prev = None
-		index = 1
-		while len(self) > 1:
-			while index < step:
-				prev = current
-				current = current.next
-				index +=1
-			if current	== self.head:
-				self.head = prev
-			print(f"REMOVED: {current.data}")
-			prev.next = current.next
-			current = prev.next
-			index = 1
-
-		return self.print_list()
-		
-	def is_circ_ll(self, input_list):
-		current = input_list.head
+	def is_circular_linked_list(self, li):
+		current = li.head
 		while current:
 			current = current.next
-			if current == None:
-				return False
-			elif current == self.head:
+			if current == li.head:
 				return True
-
-			
-
-
-from LinkedList_new import LinkedList
-
-
-llist = LinkedList()
-llist.append(5)
-llist.append(6)
-llist.append(8)
+				break
+		return False
 
 
 cllist = CircularLinkedList()
-cllist.append(1)
-cllist.append(2)
-cllist.append(3)
-cllist.append(4)
-# cllist.append(5)
-# cllist.append(6)
-# cllist.append(7)
-# cllist.append(8)
-# cllist.append(9)
-# cllist.append(10)
-# cllist.print_list()
-# print ("\n")
-# cllist.josephus_circle(2)
+cllist.append("B")
+cllist.append("C")
+cllist.append("D")
+cllist.prepend("A")
+cllist.append("E")
+cllist.append("F")
+cllist.append("G")
+cllist.append("H")
+cllist.append("I")
+cllist.append("J")
+cllist.append("K")
+# cllist.append(1)
+# cllist.append(2)
+# cllist.append(3)
+# cllist.append(4)
+#cllist.display_list()
+
+# cllist.remove_node("C")
+#print("\n")
+
+# cllist.josephus(2)
+print(cllist.is_circular_linked_list(cllist))
+#cllist.display_list()
+
+llist = LinkedList()
+llist.append(1)
+llist.append(2)
+llist.append(3)
+llist.append(4)
+
+print(cllist.is_circular_linked_list(llist))
 
 
-print(cllist.is_circ_ll(cllist))
+# cllist.split_list()
+
+
+
 
